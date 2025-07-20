@@ -158,13 +158,13 @@
   <script>
     const items = [
       { name: "ตัดต่อรูป เฉพาะไฟล์ JPG", price: 125, type: "edit" },
-      { name: "อัดรูป 1 นิ้ว โหล", price: 20, type: "print" },
-      { name: "อัดรูป 1.5 นิ้ว โหล", price: 25, type: "print" },
-      { name: "อัดรูป 2 นิ้ว โหล", price: 30, type: "print" },
-      { name: "อัดรูป 1x1.5 นิ้ว โหล", price: 30, type: "print" },
-      { name: "อัดรูป 3.5 x 4.5 เซนติเมตร โหล", price: 30, type: "print" },
+      { name: "อัดรูป 1 นิ้ว", price: 20, type: "print" },
+      { name: "อัดรูป 1.5 นิ้ว", price: 25, type: "print" },
+      { name: "อัดรูป 2 นิ้ว", price: 30, type: "print" },
+      { name: "อัดรูป 1x1.5 นิ้ว", price: 30, type: "print" },
+      { name: "อัดรูป 3.5 x 4.5 เซนติเมตร วีซ่าเกาหลี", price: 30, type: "print" },
       { name: "อัดรูป 8 x 13 เซนติเมตร", price: 5, type: "photo" },
-      { name: "อัดรูป 2x2 นิ้ว โหล", price: 30, type: "print" },
+      { name: "อัดรูป 2x2 นิ้ว", price: 30, type: "print" },
       { name: "อัดรูป 4x6 นิ้ว", price: 5, type: "photo" },
       { name: "ค่าจัดส่งพัสดุ J&T Express", price: 50, type: "shipping" }
     ];
@@ -204,12 +204,12 @@
       let suffix = '';
 
       if ([
-        "อัดรูป 1 นิ้ว โหล",
-        "อัดรูป 1.5 นิ้ว โหล",
-        "อัดรูป 2 นิ้ว โหล",
-        "อัดรูป 1x1.5 นิ้ว โหล",
-        "อัดรูป 3.5 x 4.5 เซนติเมตร โหล",
-        "อัดรูป 2x2 นิ้ว โหล"
+        "อัดรูป 1 นิ้ว",
+        "อัดรูป 1.5 นิ้ว",
+        "อัดรูป 2 นิ้ว",
+        "อัดรูป 1x1.5 นิ้ว",
+        "อัดรูป 3.5 x 4.5 เซนติเมตร วีซ่าเกาหลี",
+        "อัดรูป 2x2 นิ้ว"
       ].includes(name)) {
         suffix = ' โหล';
       } else if ([
