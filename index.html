@@ -262,6 +262,15 @@
         getItemQuantityByIndex(i) > 0
       );
 
+      }
+
+    function applyShippingCondition() {
+      const isJPGSelected = getItemQuantity("ตัดต่อเฉพาะทรงผม") > 0;
+      const hasPrintOrPhotoSelected = items.some((item, i) =>
+        (item.type === "print" || item.type === "photo") &&
+        getItemQuantityByIndex(i) > 0
+      );
+
       const shippingIndex = items.findIndex(i => i.type === "shipping");
       const totalCell = document.getElementById(`total-${shippingIndex}`);
       if (!totalCell) return; // safety check
@@ -354,5 +363,6 @@
   </script>
 </body>
 </html>
+
 
 
