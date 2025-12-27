@@ -157,8 +157,7 @@
 
   <script>
     const items = [
-      { name: "ตัดต่อรูป เฉพาะไฟล์รวมทั้งหมด JPG", price: 125, type: "edit" },
-      { name: "ตัดต่อเฉพาะทรงผม", price: 80, type: "print" },
+      { name: "ตัดต่อรูป เฉพาะไฟล์ JPG", price: 125, type: "edit" },
       { name: "อัดรูป 1 นิ้ว", price: 20, type: "print" },
       { name: "อัดรูป 1.5 นิ้ว", price: 25, type: "print" },
       { name: "อัดรูป 2 นิ้ว", price: 30, type: "print" },
@@ -218,9 +217,7 @@
         "อัดรูป 4x6 นิ้ว"
       ].includes(name)) {
         suffix = ' ใบ';
-      } else if (name === "ตัดต่อรูป เฉพาะไฟล์รวมทั้งหมด JPG") {
-        suffix = ' ไฟล์';
-         } else if (name === "ตัดต่อเฉพาะทรงผม") {
+      } else if (name === "ตัดต่อรูป เฉพาะไฟล์ JPG") {
         suffix = ' ไฟล์';
       } else if (type === 'shipping') {
         maxQuantity = 1;
@@ -256,16 +253,7 @@
     }
 
     function applyShippingCondition() {
-      const isJPGSelected = getItemQuantity("ตัดต่อรูป เฉพาะไฟล์เฉพาะไฟล์รวมทั้งหมด JPG") > 0;
-      const hasPrintOrPhotoSelected = items.some((item, i) =>
-        (item.type === "print" || item.type === "photo") &&
-        getItemQuantityByIndex(i) > 0
-      );
-
-      }
-
-    function applyShippingCondition() {
-      const isJPGSelected = getItemQuantity("ตัดต่อเฉพาะทรงผม") > 0;
+      const isJPGSelected = getItemQuantity("ตัดต่อรูป เฉพาะไฟล์ JPG") > 0;
       const hasPrintOrPhotoSelected = items.some((item, i) =>
         (item.type === "print" || item.type === "photo") &&
         getItemQuantityByIndex(i) > 0
@@ -363,6 +351,4 @@
   </script>
 </body>
 </html>
-
-
 
