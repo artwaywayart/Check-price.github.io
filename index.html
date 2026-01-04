@@ -16,44 +16,6 @@
         * {
             font-family: 'Sarabun', sans-serif;
         }
-        
-        @media (max-width: 768px) {
-            .mobile-card {
-                border-radius: 12px !important;
-                padding: 0.75rem !important;
-                margin-bottom: 0.5rem !important;
-            }
-            
-            .mobile-item {
-                background: white;
-                border-radius: 10px;
-                padding: 0.875rem;
-                margin-bottom: 0.75rem;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-                border: 2px solid #e5e7eb;
-            }
-            
-            .mobile-row {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 0.5rem;
-            }
-            
-            .mobile-row:last-child {
-                margin-bottom: 0;
-            }
-            
-            .mobile-label {
-                font-weight: 600;
-                color: #64748b;
-                font-size: 0.8rem;
-            }
-            
-            .mobile-value {
-                font-weight: 700;
-            }
-        }
     </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -82,7 +44,7 @@
             { id: 6, name: "อัดรูป 1x1.5 นิ้ว", price: 30, unit: "โหล", max: 10, isPrinting: true },
             { id: 12, name: "อัดรูป 1.5x2 นิ้ว", price: 30, unit: "โหล", max: 10, isPrinting: true },
             { id: 7, name: "อัดรูป 3.5x4.5 ซม. วีซ่าเกาหลี", price: 30, unit: "โหล", max: 10, isPrinting: true },
-            { id: 8, name: "อัดรู���� 8x13 ซม.", price: 5, unit: "��บ", max: 10, isPrinting: true },
+            { id: 8, name: "อัดรูป 8x13 ซม.", price: 5, unit: "ใบ", max: 10, isPrinting: true },
             { id: 9, name: "อัดรูป 2x2 นิ้ว", price: 30, unit: "โหล", max: 10, isPrinting: true },
             { id: 10, name: "อัดรูป 4x6 นิ้ว", price: 5, unit: "ใบ", max: 10, isPrinting: true },
             { id: 11, name: "ค่าจัดส่งพัสดุ J&T Express", price: 50, unit: "ครั้ง", max: 1, isShipping: true }
@@ -141,127 +103,22 @@
             app.style.background = `linear-gradient(135deg, ${config.background_color || defaultConfig.background_color} 0%, #dbeafe 50%, #e0f2fe 100%)`;
             app.style.fontFamily = `${customFont}, ${baseFontStack}`;
             
-            if (isMobile) {
-                // Mobile Layout
-                app.innerHTML = `
-                    <div style="padding: 0.75rem;">
-                        <h1 style="font-size: ${baseSize * 1.4}px; font-weight: 700; text-align: center; margin-bottom: 1rem; color: ${config.text_color || defaultConfig.text_color}; text-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                            ${config.page_title || defaultConfig.page_title}
-                        </h1>
-                        
-                        <div class="mobile-card" style="background-color: ${config.card_color || defaultConfig.card_color}; border-radius: 12px; padding: 0.75rem; margin-bottom: 1rem; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);">
-                            ${services.map(service => {
-                                const isShippingCharged = service.isShipping && shouldChargeShipping();
-                                const textColor = service.isShipping ? '#dc2626' : (config.text_color || defaultConfig.text_color);
-                                const displayTotal = service.isShipping ? (isShippingCharged ? service.price : 0) : (service.price * quantities[service.id]);
-                                
-                                return `
-                                <div class="mobile-item">
-                                    <div style="font-size: ${baseSize * 0.95}px; font-weight: ${service.isShipping ? '700' : '600'}; color: ${textColor}; margin-bottom: 0.625rem; line-height: 1.3;">
-                                        ${service.name}
-                                    </div>
-                                    
-                                    <div class="mobile-row">
-                                        <span class="mobile-label" style="font-size: ${baseSize * 0.8}px;">ราคา</span>
-                                        <span class="mobile-value" style="font-size: ${baseSize * 0.9}px; color: ${textColor};">${service.price} บาท</span>
-                                    </div>
-                                    
-                                    <div class="mobile-row">
-                                        <span class="mobile-label" style="font-size: ${baseSize * 0.8}px;">จำนวน</span>
-                                        ${service.isShipping ? `
-                                            <span style="font-size: ${baseSize * 0.8}px; color: ${textColor}; font-style: italic; font-weight: 600;">
-                                                ${isShippingCharged ? '✓ คิดค่าส่ง' : '✗ ไม่คิดค่าส่ง'}
-                                            </span>
-                                        ` : `
-                                            <select 
-                                                onchange="updateQuantity(${service.id}, this.value - ${quantities[service.id]})"
-                                                style="width: 100px; height: 36px; padding: 0 1.5rem 0 0.625rem; border-radius: 8px; border: 2px solid ${config.primary_button_color || defaultConfig.primary_button_color}; background-color: white; color: ${config.text_color || defaultConfig.text_color}; font-size: ${baseSize * 0.85}px; font-weight: 600; cursor: pointer; appearance: none; background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%233b82f6%27 stroke-width=%272.5%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e'); background-repeat: no-repeat; background-position: right 0.35rem center; background-size: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.08);">
-                                                ${Array.from({length: service.max + 1}, (_, i) => i).map(num => `
-                                                    <option value="${num}" ${quantities[service.id] === num ? 'selected' : ''}>
-                                                        ${num === 0 ? '-' : `${num} ${service.unit}`}
-                                                    </option>
-                                                `).join('')}
-                                            </select>
-                                        `}
-                                    </div>
-                                    
-                                    ${displayTotal > 0 || service.isShipping ? `
-                                    <div class="mobile-row" style="margin-top: 0.625rem; padding-top: 0.625rem; border-top: 2px dashed #e5e7eb;">
-                                        <span class="mobile-label" style="font-size: ${baseSize * 0.85}px; color: ${config.primary_button_color || defaultConfig.primary_button_color};">รวม</span>
-                                        <span class="mobile-value" style="font-size: ${baseSize * 1.1}px; color: ${displayTotal > 0 ? (service.isShipping ? '#dc2626' : (config.primary_button_color || defaultConfig.primary_button_color)) : '#9ca3af'};">
-                                            ${displayTotal.toLocaleString()} บาท
-                                        </span>
-                                    </div>
-                                    ` : ''}
-                                </div>
-                                `;
-                            }).join('')}
-                        </div>
-                        
-                        ${selectedItems.length > 0 ? `
-                            <div class="mobile-card" style="background-color: ${config.card_color || defaultConfig.card_color}; border-radius: 12px; padding: 0.75rem; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);">
-                                <h2 style="font-size: ${baseSize * 1.25}px; font-weight: 700; margin-bottom: 1rem; color: ${config.text_color || defaultConfig.text_color}; text-align: center; border-bottom: 3px solid ${config.accent_color || defaultConfig.accent_color}; padding-bottom: 0.625rem;">
-                                    ${config.summary_title || defaultConfig.summary_title}
-                                </h2>
-                                
-                                ${selectedItems.map((item, idx) => {
-                                    const isShipping = item.isShipping;
-                                    const textColor = isShipping ? '#dc2626' : (config.text_color || defaultConfig.text_color);
-                                    return `
-                                    <div style="background-color: ${idx % 2 === 0 ? 'white' : '#f9fafb'}; border-radius: 8px; padding: 0.75rem; margin-bottom: 0.625rem; border: 1px solid #e5e7eb;">
-                                        <div style="font-size: ${baseSize * 0.9}px; font-weight: ${isShipping ? '700' : '600'}; color: ${textColor}; margin-bottom: 0.5rem; line-height: 1.3;">
-                                            ${item.name}
-                                        </div>
-                                        <div style="display: flex; justify-content: space-between; font-size: ${baseSize * 0.8}px; margin-bottom: 0.25rem;">
-                                            <span style="color: #64748b;">ราคา/หน่วย:</span>
-                                            <span style="font-weight: 600; color: ${textColor};">${item.price} บาท</span>
-                                        </div>
-                                        <div style="display: flex; justify-content: space-between; font-size: ${baseSize * 0.8}px; margin-bottom: 0.25rem;">
-                                            <span style="color: #64748b;">จำนวน:</span>
-                                            <span style="font-weight: 600; color: ${textColor};">${item.quantity} ${item.unit}</span>
-                                        </div>
-                                        <div style="display: flex; justify-content: space-between; font-size: ${baseSize * 0.95}px; padding-top: 0.5rem; border-top: 2px dashed #e5e7eb; margin-top: 0.5rem;">
-                                            <span style="font-weight: 700; color: ${config.text_color || defaultConfig.text_color};">รวม:</span>
-                                            <span style="font-weight: 700; color: ${isShipping ? '#dc2626' : (config.primary_button_color || defaultConfig.primary_button_color)}; font-size: ${baseSize}px;">${item.total.toLocaleString()} บาท</span>
-                                        </div>
-                                    </div>
-                                    `;
-                                }).join('')}
-                                
-                                <div style="background: linear-gradient(135deg, ${config.accent_color || defaultConfig.accent_color} 0%, ${config.primary_button_color || defaultConfig.primary_button_color} 100%); border-radius: 10px; padding: 1rem 0.875rem; margin-top: 1rem; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
-                                    <div style="text-align: center; margin-bottom: 0.5rem;">
-                                        <span style="font-size: ${baseSize * 1.05}px; font-weight: 700; color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.1); display: block;">
-                                            ${config.total_label || defaultConfig.total_label}
-                                        </span>
-                                    </div>
-                                    <div style="text-align: center;">
-                                        <span style="font-size: ${baseSize * 1.75}px; font-weight: 700; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.15);">
-                                            ${grandTotal.toLocaleString()}
-                                        </span>
-                                        <span style="font-size: ${baseSize * 1.1}px; font-weight: 600; color: white; margin-left: 0.25rem;">บาท</span>
-                                    </div>
-                                </div>
-                            </div>
-                        ` : ''}
-                    </div>
-                `;
-            } else {
-                // Desktop Layout (existing code)
-                app.innerHTML = `
-                <div style="max-width: 1200px; margin: 0 auto; padding: 1rem;">
-                    <h1 style="font-size: ${baseSize * 1.75}px; font-weight: 700; text-align: center; margin-bottom: 1.5rem; color: ${config.text_color || defaultConfig.text_color}; padding: 0 0.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            // Unified Table Layout for both Mobile and Desktop
+            app.innerHTML = `
+                <div style="max-width: ${isMobile ? '100%' : '1200px'}; margin: 0 auto; padding: ${isMobile ? '0.75rem' : '1rem'};">
+                    <h1 style="font-size: ${baseSize * (isMobile ? 1.4 : 1.75)}px; font-weight: 700; text-align: center; margin-bottom: ${isMobile ? '1rem' : '1.5rem'}; color: ${config.text_color || defaultConfig.text_color}; padding: 0 0.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.05);">
                         ${config.page_title || defaultConfig.page_title}
                     </h1>
                     
-                    <div style="background-color: ${config.card_color || defaultConfig.card_color}; border-radius: 16px; padding: 1rem; margin-bottom: 1.5rem; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);">
+                    <div style="background-color: ${config.card_color || defaultConfig.card_color}; border-radius: 16px; padding: ${isMobile ? '0.75rem' : '1rem'}; margin-bottom: 1.5rem; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);">
                         <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
-                            <table style="width: 100%; border-collapse: collapse; min-width: 600px;">
+                            <table style="width: 100%; border-collapse: collapse; min-width: ${isMobile ? '500px' : '600px'};">
                                 <thead>
                                     <tr style="border-bottom: 3px solid ${config.accent_color || defaultConfig.accent_color};">
-                                        <th style="padding: 0.875rem 0.5rem; text-align: left; font-size: ${baseSize * 1.05}px; font-weight: 700; color: ${config.text_color || defaultConfig.text_color};">รายการ</th>
-                                        <th style="padding: 0.875rem 0.5rem; text-align: right; font-size: ${baseSize * 1.05}px; font-weight: 700; color: ${config.text_color || defaultConfig.text_color}; min-width: 85px;">ราคา<br><span style="font-size: ${baseSize * 0.8}px; font-weight: 400;">(บาท)</span></th>
-                                        <th style="padding: 0.875rem 0.5rem; text-align: center; font-size: ${baseSize * 1.05}px; font-weight: 700; color: ${config.text_color || defaultConfig.text_color}; min-width: 140px;">จำนวน</th>
-                                        <th style="padding: 0.875rem 0.5rem; text-align: right; font-size: ${baseSize * 1.05}px; font-weight: 700; color: ${config.text_color || defaultConfig.text_color}; min-width: 100px;">รวม<br><span style="font-size: ${baseSize * 0.8}px; font-weight: 400;">(บาท)</span></th>
+                                        <th style="padding: ${isMobile ? '0.75rem 0.5rem' : '0.875rem 0.5rem'}; text-align: left; font-size: ${baseSize * (isMobile ? 0.9 : 1.05)}px; font-weight: 700; color: ${config.text_color || defaultConfig.text_color};">รายการ</th>
+                                        <th style="padding: ${isMobile ? '0.75rem 0.5rem' : '0.875rem 0.5rem'}; text-align: right; font-size: ${baseSize * (isMobile ? 0.9 : 1.05)}px; font-weight: 700; color: ${config.text_color || defaultConfig.text_color}; min-width: ${isMobile ? '75px' : '85px'};">ราคา<br><span style="font-size: ${baseSize * 0.7}px; font-weight: 400;">(บาท)</span></th>
+                                        <th style="padding: ${isMobile ? '0.75rem 0.5rem' : '0.875rem 0.5rem'}; text-align: center; font-size: ${baseSize * (isMobile ? 0.9 : 1.05)}px; font-weight: 700; color: ${config.text_color || defaultConfig.text_color}; min-width: ${isMobile ? '110px' : '140px'};">จำนวน</th>
+                                        <th style="padding: ${isMobile ? '0.75rem 0.5rem' : '0.875rem 0.5rem'}; text-align: right; font-size: ${baseSize * (isMobile ? 0.9 : 1.05)}px; font-weight: 700; color: ${config.text_color || defaultConfig.text_color}; min-width: ${isMobile ? '85px' : '100px'};">รวม<br><span style="font-size: ${baseSize * 0.7}px; font-weight: 400;">(บาท)</span></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -269,15 +126,18 @@
                                         const isShippingCharged = service.isShipping && shouldChargeShipping();
                                         const textColor = service.isShipping ? '#dc2626' : (config.text_color || defaultConfig.text_color);
                                         const displayTotal = service.isShipping ? (isShippingCharged ? service.price : 0) : (service.price * quantities[service.id]);
+                                        const isSelected = quantities[service.id] > 0 || (service.isShipping && isShippingCharged);
+                                        const rowBgColor = isSelected ? '#f0f9ff' : 'transparent';
+                                        const hoverColor = isSelected ? '#e0f2fe' : '#f9fafb';
                                         
                                         return `
-                                        <tr style="border-bottom: 1px solid #e5e7eb; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f9fafb';" onmouseout="this.style.backgroundColor='transparent';">
-                                            <td style="padding: 0.875rem 0.5rem; font-size: ${baseSize * 0.95}px; color: ${textColor}; font-weight: ${service.isShipping ? '700' : '400'}; line-height: 1.4;">${service.name}</td>
-                                            <td style="padding: 0.875rem 0.5rem; text-align: right; font-size: ${baseSize * 0.95}px; color: ${textColor}; font-weight: 600;">${service.price}</td>
-                                            <td style="padding: 0.875rem 0.5rem;">
+                                        <tr style="border-bottom: 1px solid #e5e7eb; background-color: ${rowBgColor}; transition: background-color 0.2s;" ${!isMobile ? `onmouseover="this.style.backgroundColor='${hoverColor}';" onmouseout="this.style.backgroundColor='${rowBgColor}';"` : ''}>
+                                            <td style="padding: ${isMobile ? '0.75rem 0.5rem' : '0.875rem 0.5rem'}; font-size: ${baseSize * (isMobile ? 0.85 : 0.95)}px; color: ${textColor}; font-weight: ${service.isShipping ? '700' : '400'}; line-height: 1.3;">${service.name}</td>
+                                            <td style="padding: ${isMobile ? '0.75rem 0.5rem' : '0.875rem 0.5rem'}; text-align: right; font-size: ${baseSize * (isMobile ? 0.85 : 0.95)}px; color: ${textColor}; font-weight: 600;">${service.price}</td>
+                                            <td style="padding: ${isMobile ? '0.75rem 0.5rem' : '0.875rem 0.5rem'};">
                                                 ${service.isShipping ? `
                                                     <div style="display: flex; align-items: center; justify-content: center;">
-                                                        <span style="font-size: ${baseSize * 0.85}px; color: ${textColor}; font-style: italic; font-weight: 600;">
+                                                        <span style="font-size: ${baseSize * (isMobile ? 0.75 : 0.85)}px; color: ${textColor}; font-style: italic; font-weight: 600;">
                                                             ${isShippingCharged ? '✓ คิดค่าส่ง' : '✗ ไม่คิดค่าส่ง'}
                                                         </span>
                                                     </div>
@@ -285,9 +145,8 @@
                                                     <div style="display: flex; align-items: center; justify-content: center;">
                                                         <select 
                                                             onchange="updateQuantity(${service.id}, this.value - ${quantities[service.id]})"
-                                                            style="width: 110px; height: 38px; padding: 0 1.75rem 0 0.75rem; border-radius: 10px; border: 2px solid ${config.primary_button_color || defaultConfig.primary_button_color}; background-color: white; color: ${config.text_color || defaultConfig.text_color}; font-size: ${baseSize * 0.9}px; font-weight: 600; cursor: pointer; appearance: none; background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2720%27 height=%2720%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%233b82f6%27 stroke-width=%272.5%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e'); background-repeat: no-repeat; background-position: right 0.4rem center; background-size: 18px; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.08);"
-                                                            onmouseover="this.style.borderColor='${config.accent_color || defaultConfig.accent_color}'; this.style.boxShadow='0 4px 12px rgba(59, 130, 246, 0.25)';"
-                                                            onmouseout="this.style.borderColor='${config.primary_button_color || defaultConfig.primary_button_color}'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.08)';">
+                                                            style="width: ${isMobile ? '95px' : '110px'}; height: ${isMobile ? '34px' : '38px'}; padding: 0 1.5rem 0 ${isMobile ? '0.5rem' : '0.75rem'}; border-radius: ${isMobile ? '8px' : '10px'}; border: 2px solid ${config.primary_button_color || defaultConfig.primary_button_color}; background-color: white; color: ${config.text_color || defaultConfig.text_color}; font-size: ${baseSize * (isMobile ? 0.8 : 0.9)}px; font-weight: 600; cursor: pointer; appearance: none; background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27${isMobile ? '16' : '20'}%27 height=%27${isMobile ? '16' : '20'}%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%233b82f6%27 stroke-width=%272.5%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e'); background-repeat: no-repeat; background-position: right ${isMobile ? '0.35rem' : '0.4rem'} center; background-size: ${isMobile ? '15px' : '18px'}; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.08);"
+                                                            ${!isMobile ? `onmouseover="this.style.borderColor='${config.accent_color || defaultConfig.accent_color}'; this.style.boxShadow='0 4px 12px rgba(59, 130, 246, 0.25)';" onmouseout="this.style.borderColor='${config.primary_button_color || defaultConfig.primary_button_color}'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.08)';"` : ''}>
                                                             ${Array.from({length: service.max + 1}, (_, i) => i).map(num => `
                                                                 <option value="${num}" ${quantities[service.id] === num ? 'selected' : ''}>
                                                                     ${num === 0 ? '-' : `${num} ${service.unit}`}
@@ -297,7 +156,7 @@
                                                     </div>
                                                 `}
                                             </td>
-                                            <td style="padding: 0.875rem 0.5rem; text-align: right; font-size: ${baseSize * 1.05}px; font-weight: 700; color: ${displayTotal > 0 ? (config.primary_button_color || defaultConfig.primary_button_color) : textColor};">
+                                            <td style="padding: ${isMobile ? '0.75rem 0.5rem' : '0.875rem 0.5rem'}; text-align: right; font-size: ${baseSize * (isMobile ? 0.9 : 1.05)}px; font-weight: 700; color: ${displayTotal > 0 ? (config.primary_button_color || defaultConfig.primary_button_color) : textColor};">
                                                 ${displayTotal.toLocaleString()}
                                             </td>
                                         </tr>
@@ -309,19 +168,19 @@
                     </div>
                     
                     ${selectedItems.length > 0 ? `
-                        <div style="background-color: ${config.card_color || defaultConfig.card_color}; border-radius: 16px; padding: 1rem; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);">
-                            <h2 style="font-size: ${baseSize * 1.4}px; font-weight: 700; margin-bottom: 1.25rem; color: ${config.text_color || defaultConfig.text_color}; border-bottom: 3px solid ${config.accent_color || defaultConfig.accent_color}; padding: 0 0.25rem 0.75rem 0.25rem; text-align: center;">
+                        <div style="background-color: ${config.card_color || defaultConfig.card_color}; border-radius: 16px; padding: ${isMobile ? '0.75rem' : '1rem'}; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);">
+                            <h2 style="font-size: ${baseSize * (isMobile ? 1.25 : 1.4)}px; font-weight: 700; margin-bottom: ${isMobile ? '1rem' : '1.25rem'}; color: ${config.text_color || defaultConfig.text_color}; border-bottom: 3px solid ${config.accent_color || defaultConfig.accent_color}; padding: 0 0.25rem ${isMobile ? '0.625rem' : '0.75rem'} 0.25rem; text-align: center;">
                                 ${config.summary_title || defaultConfig.summary_title}
                             </h2>
                             
                             <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
-                                <table style="width: 100%; border-collapse: collapse; margin-bottom: 1.25rem; min-width: 500px;">
+                                <table style="width: 100%; border-collapse: collapse; margin-bottom: ${isMobile ? '1rem' : '1.25rem'}; min-width: ${isMobile ? '450px' : '500px'};">
                                     <thead>
                                         <tr style="background: linear-gradient(135deg, ${config.accent_color || defaultConfig.accent_color} 0%, ${config.primary_button_color || defaultConfig.primary_button_color} 100%); color: white;">
-                                            <th style="padding: 0.75rem 0.5rem; text-align: left; font-size: ${baseSize * 0.95}px; font-weight: 600; border-top-left-radius: 8px;">รายการ</th>
-                                            <th style="padding: 0.75rem 0.5rem; text-align: right; font-size: ${baseSize * 0.95}px; font-weight: 600; min-width: 80px;">ราคา/<br>หน่วย</th>
-                                            <th style="padding: 0.75rem 0.5rem; text-align: center; font-size: ${baseSize * 0.95}px; font-weight: 600; min-width: 85px;">จำนวน</th>
-                                            <th style="padding: 0.75rem 0.5rem; text-align: right; font-size: ${baseSize * 0.95}px; font-weight: 600; min-width: 90px; border-top-right-radius: 8px;">รวม<br>(บาท)</th>
+                                            <th style="padding: ${isMobile ? '0.65rem 0.5rem' : '0.75rem 0.5rem'}; text-align: left; font-size: ${baseSize * (isMobile ? 0.85 : 0.95)}px; font-weight: 600; border-top-left-radius: 8px;">รายการ</th>
+                                            <th style="padding: ${isMobile ? '0.65rem 0.5rem' : '0.75rem 0.5rem'}; text-align: right; font-size: ${baseSize * (isMobile ? 0.85 : 0.95)}px; font-weight: 600; min-width: ${isMobile ? '70px' : '80px'};">ราคา/<br>หน่วย</th>
+                                            <th style="padding: ${isMobile ? '0.65rem 0.5rem' : '0.75rem 0.5rem'}; text-align: center; font-size: ${baseSize * (isMobile ? 0.85 : 0.95)}px; font-weight: 600; min-width: ${isMobile ? '75px' : '85px'};">จำนวน</th>
+                                            <th style="padding: ${isMobile ? '0.65rem 0.5rem' : '0.75rem 0.5rem'}; text-align: right; font-size: ${baseSize * (isMobile ? 0.85 : 0.95)}px; font-weight: 600; min-width: ${isMobile ? '80px' : '90px'}; border-top-right-radius: 8px;">รวม<br>(บาท)</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -330,21 +189,21 @@
                                             const textColor = isShipping ? '#dc2626' : (config.text_color || defaultConfig.text_color);
                                             return `
                                             <tr style="border-bottom: 1px solid #e5e7eb; background-color: ${idx % 2 === 0 ? 'white' : '#f9fafb'};">
-                                                <td style="padding: 0.75rem 0.5rem; font-size: ${baseSize * 0.9}px; color: ${textColor}; line-height: 1.4; font-weight: ${isShipping ? '700' : '400'};">${item.name}</td>
-                                                <td style="padding: 0.75rem 0.5rem; text-align: right; font-size: ${baseSize * 0.9}px; color: ${textColor};">${item.price}</td>
-                                                <td style="padding: 0.75rem 0.5rem; text-align: center; font-size: ${baseSize * 0.9}px; color: ${textColor}; font-weight: 600;">${item.quantity} ${item.unit}</td>
-                                                <td style="padding: 0.75rem 0.5rem; text-align: right; font-size: ${baseSize * 0.95}px; font-weight: 700; color: ${isShipping ? '#dc2626' : (config.primary_button_color || defaultConfig.primary_button_color)};">${item.total.toLocaleString()}</td>
+                                                <td style="padding: ${isMobile ? '0.65rem 0.5rem' : '0.75rem 0.5rem'}; font-size: ${baseSize * (isMobile ? 0.8 : 0.9)}px; color: ${textColor}; line-height: 1.3; font-weight: ${isShipping ? '700' : '400'};">${item.name}</td>
+                                                <td style="padding: ${isMobile ? '0.65rem 0.5rem' : '0.75rem 0.5rem'}; text-align: right; font-size: ${baseSize * (isMobile ? 0.8 : 0.9)}px; color: ${textColor};">${item.price}</td>
+                                                <td style="padding: ${isMobile ? '0.65rem 0.5rem' : '0.75rem 0.5rem'}; text-align: center; font-size: ${baseSize * (isMobile ? 0.8 : 0.9)}px; color: ${textColor}; font-weight: 600;">${item.quantity} ${item.unit}</td>
+                                                <td style="padding: ${isMobile ? '0.65rem 0.5rem' : '0.75rem 0.5rem'}; text-align: right; font-size: ${baseSize * (isMobile ? 0.85 : 0.95)}px; font-weight: 700; color: ${isShipping ? '#dc2626' : (config.primary_button_color || defaultConfig.primary_button_color)};">${item.total.toLocaleString()}</td>
                                             </tr>
                                         `}).join('')}
                                     </tbody>
                                 </table>
                             </div>
                             
-                            <div style="background: linear-gradient(135deg, ${config.accent_color || defaultConfig.accent_color} 0%, ${config.primary_button_color || defaultConfig.primary_button_color} 100%); border-radius: 12px; padding: 1.25rem 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);">
-                                <span style="font-size: ${baseSize * 1.2}px; font-weight: 700; color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.1);">
+                            <div style="background: linear-gradient(135deg, ${config.accent_color || defaultConfig.accent_color} 0%, ${config.primary_button_color || defaultConfig.primary_button_color} 100%); border-radius: 12px; padding: ${isMobile ? '1rem 0.875rem' : '1.25rem 1rem'}; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);">
+                                <span style="font-size: ${baseSize * (isMobile ? 1.05 : 1.2)}px; font-weight: 700; color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.1);">
                                     ${config.total_label || defaultConfig.total_label}:
                                 </span>
-                                <span style="font-size: ${baseSize * 1.65}px; font-weight: 700; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.15);">
+                                <span style="font-size: ${baseSize * (isMobile ? 1.5 : 1.65)}px; font-weight: 700; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.15);">
                                     ${grandTotal.toLocaleString()} บาท
                                 </span>
                             </div>
@@ -352,7 +211,6 @@
                     ` : ''}
                 </div>
             `;
-            }
         }
 
         async function onConfigChange(config) {
@@ -436,5 +294,5 @@
 
         renderApp();
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b88f92476289d1e',t:'MTc2NzUxMTIyNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b8901da36359d1e',t:'MTc2NzUxMTU4Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
